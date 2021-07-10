@@ -25,7 +25,7 @@ services:
     # create db, user, pass
 
   fx-elasticsearch:
-    image: elasticsearch:5
+    image: elasticsearch:6.8.12
     deploy:
       restart_policy:
         condition: on-failure
@@ -34,8 +34,12 @@ services:
         window: 120s
       placement:
         constraints: [node.role == manager]
+      resources:
+        limits:
+          memory: 6G
     environment:
       - ES_JAVA_OPTS=${ELASTICSEARCH_MEM}
+      - cluster.name=elasticsearch
     volumes:
       - /apisecuriti/elasticsearch/data:/usr/share/elasticsearch/data
       - /opt/apisecuriti/UpdDockerAPISec-V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
