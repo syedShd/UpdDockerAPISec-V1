@@ -1,0 +1,194 @@
+version: '3.5'
+# networking
+# volumes
+services:
+  fx-mail-bot-v1:
+    image: "team2021/notification-email-skill-bot-v1:latest"
+    #autodestroy: ALWAYS
+    #autorestart: ON_FAILURE
+    #autoredeploy: true
+    #target_num_containers: 2
+    #sequential_deployment: true
+    #deployment_strategy: high_availability
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+    environment:
+      # Fx-Connection
+      - FX_HOST=${RABBITMQ_HOST}
+      - FX_PORT=${RABBITMQ_PORT}
+      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+    # inject rabbit-host, port, vhost, user-mail, user-mail-pass
+
+  fx-vc-git-skill-bot-v1:
+    image: "team2021/vc-git-bot-v1:latest"
+    #autodestroy: ALWAYS
+    #autorestart: ON_FAILURE
+    #autoredeploy: true
+    #target_num_containers: 2
+    #sequential_deployment: true
+    #deployment_strategy: high_availability
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: stop-first
+    environment:
+      # RabbitMQ
+      - FX_HOST=${RABBITMQ_HOST}
+      - FX_PORT=${RABBITMQ_PORT}
+      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+    # inject rabbit-host, port, vhost, user-sync, user-sync-pass
+
+#  fx-it-github-skill-bot-v1:
+#    image: "apisecuriti/issue-tracker-github-skill-bot-v1:latest"
+#    #autodestroy: ALWAYS
+#    #autorestart: ON_FAILURE
+#    #autoredeploy: true
+#    #target_num_containers: 2
+#    #sequential_deployment: true
+#    #deployment_strategy: high_availability
+#    deploy:
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+#      update_config:
+#        parallelism: 2
+#        delay: 10s
+#        order: stop-first
+#    environment:
+#      # RabbitMQ
+#      - FX_HOST=${RABBITMQ_HOST}
+#      - FX_PORT=${RABBITMQ_PORT}
+#      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+#      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+#    logging:
+#      driver: syslog
+#      options:
+#        tag: "{{.Name}}/{{.ID}}"
+
+#  fx-it-jira-skill-bot-v1:
+#    image: "apisecuriti/issue-tracker-jira-skill-bot-v1:latest"
+#    #autodestroy: ALWAYS
+#    #autorestart: ON_FAILURE
+#    #autoredeploy: true
+#    #target_num_containers: 2
+#    #sequential_deployment: true
+#    #deployment_strategy: high_availability
+#    deploy:
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+#      update_config:
+#        parallelism: 2
+#        delay: 10s
+#        order: stop-first
+#    environment:
+#      # RabbitMQ
+#      - FX_HOST=${RABBITMQ_HOST}
+#      - FX_PORT=${RABBITMQ_PORT}
+#      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+#      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+#    logging:
+#      driver: syslog
+#      options:
+#        tag: "{{.Name}}/{{.ID}}"
+
+  fx-it-fx-skill-bot-v1:
+    image: "apisecuriti/issue-tracker-bot-v1:latest"
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+    environment:
+      # RabbitMQ
+      - FX_HOST=${RABBITMQ_HOST}
+      - FX_PORT=${RABBITMQ_PORT}
+      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+
+
+#  fx-notification-slack-skill-bot-v1:
+#    image: "apisecuriti/notification-slack-skill-bot-v1:latest"
+#    #autodestroy: ALWAYS
+#    #autorestart: ON_FAILURE
+#    #autoredeploy: true
+#    #target_num_containers: 2
+#    #sequential_deployment: true
+#    #deployment_strategy: high_availability
+#    deploy:
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+#      update_config:
+#        parallelism: 2
+#        delay: 10s
+#        order: stop-first
+#    environment:
+#      # RabbitMQ
+#      - FX_HOST=${RABBITMQ_HOST}
+#      - FX_PORT=${RABBITMQ_PORT}
+#      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+#      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+#    logging:
+#      driver: syslog
+#      options:
+#        tag: "{{.Name}}/{{.ID}}"
+
+  fx-cloud-aws-skill-bot-v1:
+    image: "team2021/cloud-aws-bot-v1:latest"
+    #autodestroy: ALWAYS
+    #autorestart: ON_FAILURE
+    #autoredeploy: true
+    #target_num_containers: 2
+    #sequential_deployment: true
+    #deployment_strategy: high_availability
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+    environment:
+      # RabbitMQ
+      - FX_HOST=${RABBITMQ_HOST}
+      - FX_PORT=${RABBITMQ_PORT}
+      - FX_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - FX_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+

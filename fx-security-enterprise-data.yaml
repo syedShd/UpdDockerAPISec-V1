@@ -1,0 +1,75 @@
+version: '3.5'
+services:
+  fx-postgres:
+    image: postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres -c 'shared_buffers=256MB' -c 'max_connections=300'
+    volumes:
+      - /apisecuriti/postgres/data:/var/lib/postgresql/data
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+    # create db, user, pass
+
+  fx-elasticsearch:
+    image: elasticsearch:6.8.12
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - ES_JAVA_OPTS=${ELASTICSEARCH_MEM}
+    volumes:
+      - /apisecuriti/elasticsearch/data:/usr/share/elasticsearch/data
+      - /opt/apisecuriti/Docker_APISec_V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+  fx-rabbitmq:
+    image: rabbitmq:management
+    hostname: fx_rabbitmq_stg
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK=${RABBITMQ_VM_MEMORY_HIGH_WATERMARK}
+    volumes:
+      - mqdata:/var/lib/rabbitmq
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+
+
+volumes:
+  #pgdata:
+  #esdata:
+  mqdata:

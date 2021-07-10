@@ -1,0 +1,40 @@
+version: '3.5'
+# networking
+# volumes
+services:
+  fx-control-plane-v1:
+    image: "team2021/web-v1:latest"
+    #autodestroy: ALWAYS
+    #autorestart: ON_FAILURE
+    #autoredeploy: true
+    #target_num_containers: 2
+    #sequential_deployment: true
+    #deployment_strategy: high_availability
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      # RabbitMQ
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+      # Postgres
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # ES
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
+      - JAVA_OPTS=${CONTROL_PLANE_MEM}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+

@@ -1,0 +1,33 @@
+version: '3.5'
+# networking
+# volumes
+services:
+  fx-haproxy:
+    image: haproxy:1.7
+    #autodestroy: ALWAYS
+    #autorestart: ON_FAILURE
+    #autoredeploy: true
+    #target_num_containers: 2
+    #sequential_deployment: true
+    #deployment_strategy: high_availability
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: stop-first
+    volumes:
+      - /apisecuriti/haproxy:/usr/local/etc/haproxy:ro
+    ports:
+      - 15671:15671
+      - 5671:5671
+      - 15672:15672
+      - 5672:5672
+      - 80:80
+      - 443:443
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
