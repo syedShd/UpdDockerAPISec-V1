@@ -25,7 +25,7 @@ services:
     # create db, user, pass
 
   fx-elasticsearch:
-    image: elasticsearch:6
+    image: elasticsearch:5
     deploy:
       restart_policy:
         condition: on-failure
