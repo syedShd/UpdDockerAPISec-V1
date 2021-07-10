@@ -115,7 +115,7 @@ services:
 #        tag: "{{.Name}}/{{.ID}}"
 
   fx-it-fx-skill-bot-v1:
-    image: "apisecuriti/issue-tracker-bot-v1:latest"
+    image: "team2021/issue-tracker-bot-v1:latest"
     deploy:
       replicas: 1
       placement:
