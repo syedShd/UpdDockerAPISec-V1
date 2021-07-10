@@ -39,10 +39,10 @@ services:
           memory: 6G
     environment:
       - ES_JAVA_OPTS=${ELASTICSEARCH_MEM}
+      - /opt/apisecuriti/UpdDockerAPISec-V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
       - cluster.name=elasticsearch
     volumes:
       - /apisecuriti/elasticsearch/data:/usr/share/elasticsearch/data
-      - /opt/apisecuriti/UpdDockerAPISec-V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
     logging:
       driver: syslog
       options:
