@@ -42,7 +42,8 @@ services:
       - /opt/apisecuriti/UpdDockerAPISec-V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
       - cluster.name=elasticsearch
     volumes:
-      - /apisecuriti/elasticsearch/data:/usr/share/elasticsearch/data
+       - esdata:/usr/share/elasticsearch/data
+     # - /apisecuriti/elasticsearch/data:/usr/share/elasticsearch/data
     logging:
       driver: syslog
       options:
@@ -75,5 +76,5 @@ services:
 
 volumes:
   #pgdata:
-  #esdata:
+  esdata:
   mqdata:
