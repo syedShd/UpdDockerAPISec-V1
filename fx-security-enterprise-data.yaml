@@ -36,7 +36,7 @@ services:
         constraints: [node.role == manager]
       resources:
         limits:
-          memory: 6G
+          memory: 10G
     environment:
       - ES_JAVA_OPTS=${ELASTICSEARCH_MEM}
       - /opt/apisecuriti/UpdDockerAPISec-V1/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -76,5 +76,5 @@ services:
 
 volumes:
   #pgdata:
-  esdata:
-  mqdata:
+  #esdata:
+  #mqdata:
