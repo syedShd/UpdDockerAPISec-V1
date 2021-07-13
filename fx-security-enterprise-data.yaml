@@ -76,5 +76,5 @@ services:
 
 volumes:
   #pgdata:
-  # esdata:
-  # mqdata:
+  esdata:
+  mqdata:
