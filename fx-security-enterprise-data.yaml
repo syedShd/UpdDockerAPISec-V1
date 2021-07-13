@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   fx-postgres:
-    image: postgres
+    image: "postgres:10.2"
     deploy:
       restart_policy:
         condition: on-failure
@@ -10,13 +10,16 @@ services:
         window: 120s
       placement:
         constraints: [node.role == manager]
+      resources:
+        limits:
+          memory: 3G  
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     command: postgres -c 'shared_buffers=256MB' -c 'max_connections=300'
     volumes:
-      - esdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     logging:
       driver: syslog
       options:
@@ -25,7 +28,7 @@ services:
     # create db, user, pass
 
   fx-elasticsearch:
-    image: elasticsearch:6.8.12
+    image: "elasticsearch:6.8.12"
     deploy:
       restart_policy:
         condition: on-failure
@@ -75,6 +78,6 @@ services:
 
 
 volumes:
-  #pgdata:
+  pgdata:
   esdata:
   mqdata:
