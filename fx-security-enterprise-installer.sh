@@ -52,6 +52,7 @@ mkdir -p /apisecuriti/postgres/data
 mkdir -p /apisecuriti/elasticsearch/data
 mkdir -p /apisecuriti/rabbitmq/data
 mkdir -p /apisecuriti/haproxy
+mkdir -p /esdata
 
 echo "## CREATING SELF-SIGNED CERTIFICATE ##"
 #5.	Self-signed certificate creation.
