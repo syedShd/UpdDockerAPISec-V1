@@ -2,7 +2,7 @@ version: '3.5'
 # networking
 # volumes
 services:
-  fx-control-plane-v1:
+  fx-control-plane:
     image: "team2021/web-v1:latest"
     #autodestroy: ALWAYS
     #autorestart: ON_FAILURE
